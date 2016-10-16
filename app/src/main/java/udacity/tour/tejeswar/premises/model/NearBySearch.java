@@ -8,7 +8,9 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by tejeswar on 10/16/2016.
  */
+
 public class NearBySearch
+
 {
 
     @SerializedName("location")
@@ -32,7 +34,10 @@ public class NearBySearch
     @SerializedName("vicinity")
     private String Landmark;
 
-    public NearBySearch(List<String> degrees, String icon, long id, String landmark, String name, Integer rating, Boolean timings) {
+    public NearBySearch(List<String> degrees, String icon, long id, String landmark, String name, Integer rating, Boolean timings)
+
+    {
+
         Degrees = degrees;
         Icon = icon;
         Id = id;
@@ -40,6 +45,7 @@ public class NearBySearch
         Name = name;
         Rating = rating;
         Timings = timings;
+
     }
 
     public List<String> getDegrees() {

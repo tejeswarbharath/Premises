@@ -8,16 +8,18 @@ import android.net.Uri;
  */
 
 public class PremiseContract
+
 {
-    public static final String CONTENT_AUTHORITY = "udacity.tour.tejeswar.tourism";
+
+    public static final String CONTENT_AUTHORITY = "udacity.tour.tejeswar.premises";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_TOURISM ="tourism";
-
     public static final String PATH_LOCATION = "location";
 
-    public static long normalizeDate()
+    public static final String PATH_AUTOCOMPLETE ="autocomplete";
+
+    /**public static long normalizeDate()
 
     {
 
@@ -29,9 +31,9 @@ public class PremiseContract
 
         return time.setJulianDay(julianDay);
 
-    }
+    }**/
 
-    public static final class NearBySearch extends BaseColumns
+    public static final class NearBySearchEntry extends BaseColumns
 
     {
 
@@ -41,7 +43,7 @@ public class PremiseContract
 
         public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+PATH_LOCATION;
 
-        public static final String TABLE_NAME ="nearby";
+        public static final String TABLE_NAME ="NearBy";
 
         public static final String COLUMN_LOCATION = "coord_lat_long";
 
@@ -53,6 +55,8 @@ public class PremiseContract
 
         public static final String COLUMN_TYPE = "type"
 
+        public static final String COLUMN_KEYWORD = "keyword"
+
         public static Uri buildLocationUri(long id)
 
         {
@@ -63,27 +67,48 @@ public class PremiseContract
 
     }
 
-/**    public static final class TourismEntry extends BaseColumns
+    public static final class AutoCompleteEntry extends BaseColumns
 
     {
 
-        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_TOURISM).build();
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_AUTOCOMPLETE).build();
 
-        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_URI+"/"+PATH_TOURISM;
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+PATH_AUTOCOMPLETE;
 
-        public static final String TABLE_NAME = "tourism";
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_AUTOCOMPLETE;
+
+        public static final String TABLE_NAME = "AutoComplete";
 
         public static final String COLUMN_LOC_KEY = "location_id";
 
-        public static final String COLUMN_TOURISM_ID ="tourism_id";
+        public static final String COLUMN_INPUT = "input";
 
-        public static final String COLUMN_DESC = "desc";
+        public static final String COLUMN_TYPES ="types";
 
-        public static final String COLUMN
+        public static final String COLUMN_LANGUAGE = "language";
 
+        public static Uri buildAutoCompleteFromUri(long id)
 
-    }**/
+        {
 
+            return ContentUris.withAppendedId(CONTENT_URI,id);
 
+        }
+
+        public static Uri buildAutoCompleteWithLocation(String location)
+        {
+
+            return CONTENT_URI.buildUpon().appendPath(location).build();
+
+        }
+
+        public static String getLocationFromUri(Uri uri)
+        {
+
+            return uri.getPathSegments().get(1);
+
+        }
+
+    }
 
 }

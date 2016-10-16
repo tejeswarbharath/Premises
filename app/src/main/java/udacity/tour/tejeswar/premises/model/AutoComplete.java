@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class AutoComplete
+
 {
 
     @SerailizedName("description")
@@ -20,39 +21,52 @@ public class AutoComplete
     @SerializedName("matched_substrings")
     private List<Integer> Substring = new ArrayList<Integer>();
 
-    @SerializedName("terms")
-    List<Object> list = new ArrayList<Object>();
-
-    for (Object obj: list)
+    public class Term
     {
-        if (obj instanceof Integer)
-        {
-            @SerializedName("offset")
-            private ArrayList<Integer> Offset = new ArrayList<Integer>();
-            listOfMixedTypes.add(Offset);
-        }
-        else if (obj instanceof String)
-        {
-            @SerializedName("value")
-            private ArrayList<String> Value = new ArrayList<String>();
-            listOfMixedTypes.add(Value);
-        }
+
+        private int offset;
+        private String value;
+
     }
 
-    public AutoComplete(String description, long id, List<Object> list, Object obj, List<Integer> substring) {
+    @SerializedName("terms")
+    List<Term> list = new ArrayList<>();
+
+    @SerailizedNamed("types")
+    List<String> Types = new ArrayList<String>();
+
+    public AutoComplete(String description, long id, List<Term> list, List<Integer> substring, List<String> types)
+    {
+
         Description = description;
         Id = id;
         this.list = list;
-        this.obj = obj;
+        Substring = substring;
+        Types = types;
+    }
+
+    public List<String> getTypes() {
+        return Types;
+    }
+
+    public void setTypes(List<String> types) {
+        Types = types;
+    }
+
+    public List<Integer> getSubstring() {
+        return Substring;
+    }
+
+    public void setSubstring(List<Integer> substring) {
         Substring = substring;
     }
 
-    public String getDescription() {
-        return Description;
+    public List<Term> getList() {
+        return list;
     }
 
-    public void setDescription(String description) {
-        Description = description;
+    public void setList(List<Term> list) {
+        this.list = list;
     }
 
     public long getId() {
@@ -63,27 +77,12 @@ public class AutoComplete
         Id = id;
     }
 
-    public List<Object> getList() {
-        return list;
+    public String getDescription() {
+        return Description;
     }
 
-    public void setList(List<Object> list) {
-        this.list = list;
+    public void setDescription(String description) {
+        Description = description;
     }
 
-    public Object getObj() {
-        return obj;
-    }
-
-    public void setObj(Object obj) {
-        this.obj = obj;
-    }
-
-    public List<Integer> getSubstring() {
-        return Substring;
-    }
-
-    public void setSubstring(List<Integer> substring) {
-        Substring = substring;
-    }
 }
