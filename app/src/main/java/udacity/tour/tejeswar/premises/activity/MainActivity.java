@@ -12,7 +12,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +21,9 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import udacity.tour.tejeswar.premises.R;
+import udacity.tour.tejeswar.premises.data.LocationsContentProvider;
+import udacity.tour.tejeswar.premises.data.LocationsDB;
 
 public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor>
 
@@ -150,19 +152,14 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     {
 
         @Override
-
-        protected Void doInBackground(ContentValues contentValues)
-
-        {
+        protected Void doInBackground(ContentValues... contentValues) {
 
             /** Setting up values to insert the clicked location into SQLite database */
 
             getContentResolver().insert(LocationsContentProvider.CONTENT_URI, contentValues[0]);
 
             return null;
-
         }
-
     }
 
     private class LocationDeleteTask extends AsyncTask<Void, Void, Void>
@@ -188,7 +185,7 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R .menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

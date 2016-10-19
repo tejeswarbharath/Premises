@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import udacity.tour.tejeswar.premises.PremiseContract.NearBySearchEntry;
-import udacity.tour.tejeswar.premises.PremiseContract.AutoCompleteEntry;
+import android.content.ContentValues;
+import android.database.Cursor;
 
 /**
  * Created by tejeswar on 10/16/2016.
