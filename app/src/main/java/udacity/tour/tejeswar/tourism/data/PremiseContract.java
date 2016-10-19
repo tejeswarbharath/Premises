@@ -8,7 +8,7 @@ public class PremiseContract
 
 {
 
-  /**  public static final String CONTENT_AUTHORITY = "udacity.tour.tejeswar.premises";
+  /**  public static final String CONTENT_AUTHORITY = "udacity.tour.tejeswar.tourism";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 

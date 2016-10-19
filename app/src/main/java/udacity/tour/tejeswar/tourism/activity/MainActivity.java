@@ -1,4 +1,4 @@
-package udacity.tour.tejeswar.premises.activity;
+package udacity.tour.tejeswar.tourism.activity;
 
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -21,9 +21,9 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import udacity.tour.tejeswar.premises.R;
-import udacity.tour.tejeswar.premises.data.LocationsContentProvider;
-import udacity.tour.tejeswar.premises.data.LocationsDB;
+import udacity.tour.tejeswar.tourism.R;
+import udacity.tour.tejeswar.tourism.data.LocationsContentProvider;
+import udacity.tour.tejeswar.tourism.data.LocationsDB;
 
 public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor>
 

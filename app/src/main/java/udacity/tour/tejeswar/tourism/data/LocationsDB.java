@@ -1,8 +1,7 @@
-package udacity.tour.tejeswar.premises.data;
+package udacity.tour.tejeswar.tourism.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.database.Cursor;

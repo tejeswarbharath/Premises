@@ -1,4 +1,4 @@
-package udacity.tour.tejeswar.premises.data;
+package udacity.tour.tejeswar.tourism.data;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -15,7 +15,7 @@ import android.net.Uri;
 public class LocationsContentProvider extends ContentProvider
 {
 
-    public static final String PROVIDER_NAME = "udacity.tour.tejeswar.premises";
+    public static final String PROVIDER_NAME = "udacity.tour.tejeswar.tourism";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER_NAME + "/locations" );
 
