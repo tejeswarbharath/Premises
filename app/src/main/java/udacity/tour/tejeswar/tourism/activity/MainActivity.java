@@ -24,6 +24,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import udacity.tour.tejeswar.tourism.R;
 import udacity.tour.tejeswar.tourism.data.LocationsContentProvider;
 import udacity.tour.tejeswar.tourism.data.LocationsDB;
+import android.support.v4.content.ContextCompat;
+import android.content.pm.PackageManager;
 
 public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor>
 
@@ -59,18 +61,25 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         }
         else
         {
-
             // Google Play Services are available
             // Getting reference to the SupportMapFragment of activity_main.xml
             SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-            // Getting GoogleMap object from the fragment
-            googleMap = fm.getMap();
+                googleMap = fm.getMap();
 
-            // Enabling MyLocation Layer of Google Map
-            googleMap.setMyLocationEnabled(true);
+            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                            PackageManager.PERMISSION_GRANTED)
+            {
+                googleMap.setMyLocationEnabled(true);
+                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+            else
+            {
+                Toast.makeText(this, R.string.error_permission_map, Toast.LENGTH_LONG).show();
+            }
 
-            // Invoke LoaderCallbacks to retrieve and draw already saved locations in map
             getSupportLoaderManager().initLoader(0, null, this);
 
         }

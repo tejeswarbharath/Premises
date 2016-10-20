@@ -48,7 +48,7 @@
 
         <provider
             android:name="udacity.tour.tejeswar.tourism.data.LocationsContentProvider"
-            android:authorities="udacity.tour.tejeswar.tourism.locations"
+            android:authorities="udacity.tour.tejeswar.tourism"
             android:exported="false" />
 
         <meta-data
