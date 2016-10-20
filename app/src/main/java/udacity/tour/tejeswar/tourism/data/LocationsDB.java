@@ -72,11 +72,15 @@ public class LocationsDB extends SQLiteOpenHelper
     /** Deletes all locations from the table */
     public int del()
     {
+
         int cnt = mDB.delete(DATABASE_TABLE, null , null);
+
         return cnt;
+
     }
 
     /** Returns all the locations from the table */
+
     public Cursor getAllLocations()
     {
 

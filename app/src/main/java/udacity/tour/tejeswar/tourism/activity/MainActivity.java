@@ -27,8 +27,18 @@ import udacity.tour.tejeswar.tourism.data.LocationsContentProvider;
 import udacity.tour.tejeswar.tourism.data.LocationsDB;
 import android.support.v4.content.ContextCompat;
 import android.content.pm.PackageManager;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.widget.SearchView;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import android.app.SearchManager;
 
-public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor>
+public class MainActivity extends SherlockFragmentActivity implements LoaderCallbacks<Cursor>
 
 {
 
@@ -37,6 +47,7 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState)
 
     {
@@ -62,28 +73,41 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
             dialog.show();
 
         }
+
         else
+
         {
+
             // Google Play Services are available
+
             // Getting reference to the SupportMapFragment of activity_main.xml
+
             SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-                googleMap = fm.getMap();
+            googleMap = fm.getMap();
 
             if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                     PackageManager.PERMISSION_GRANTED &&
                     ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                             PackageManager.PERMISSION_GRANTED)
             {
+
                 googleMap.setMyLocationEnabled(true);
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
             }
+
             else
+
             {
+
                 Log.d(TAG, "error: %%%%%%%%%%%%%%%" + R.string.error_permission_map);
+
             }
 
             getSupportLoaderManager().initLoader(0, null, this);
+
+            handleIntent(getIntent());
 
         }
 
@@ -144,6 +168,54 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         });
     }
 
+    private void handleIntent(Intent intent)
+
+    {
+
+        if(intent.getAction().equals(Intent.ACTION_SEARCH))
+        {
+
+            doSearch(intent.getStringExtra(SearchManager.QUERY));
+
+        }
+        else if(intent.getAction().equals(Intent.ACTION_VIEW))
+        {
+
+            getPlace(intent.getStringExtra(SearchManager.EXTRA_DATA_KEY));
+
+        }
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+
+    {
+
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleIntent(intent);
+
+    }
+
+    private void doSearch(String query)
+    {
+
+        Bundle data = new Bundle();
+        data.putString("query", query);
+        getSupportLoaderManager().restartLoader(0, data, this);
+
+    }
+
+    private void getPlace(String query)
+    {
+
+        Bundle data = new Bundle();
+        data.putString("query", query);
+        getSupportLoaderManager().restartLoader(1, data, this);
+
+    }
+
     private void drawMarker(LatLng point)
 
     {
@@ -164,14 +236,17 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     {
 
         @Override
-        protected Void doInBackground(ContentValues... contentValues) {
+        protected Void doInBackground(ContentValues... contentValues)
+        {
 
             /** Setting up values to insert the clicked location into SQLite database */
 
             getContentResolver().insert(LocationsContentProvider.CONTENT_URI, contentValues[0]);
 
             return null;
+
         }
+
     }
 
     private class LocationDeleteTask extends AsyncTask<Void, Void, Void>
@@ -198,24 +273,40 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
         return true;
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int arg0,Bundle arg1)
+
+    public Loader<Cursor> onCreateLoader(int arg0,Bundle query)
 
     {
 
-        // Uri to the content provider LocationsContentProvider
-        Uri uri = LocationsContentProvider.CONTENT_URI;
+        CursorLoader cLoader = null;
 
-        // Fetches all the rows from locations table
-        return new CursorLoader(this, uri, null, null, null, null);
+        if(arg0==0)
+
+            cLoader = new CursorLoader(getBaseContext(), LocationsContentProvider.SEARCH_URI, null, null, new String[]{ query.getString("query") }, null);
+
+        else if(arg0==1)
+
+            cLoader = new CursorLoader(getBaseContext(), LocationsContentProvider.DETAILS_URI, null, null, new String[]{ query.getString("query") }, null);
+
+        return cLoader;
 
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> arg0,Cursor arg1)
+
     {
 
         int locationCount = 0;

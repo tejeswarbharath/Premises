@@ -39,11 +39,27 @@
 
         <activity
             android:name="udacity.tour.tejeswar.tourism.activity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.SEARCH" />
+
+            </intent-filter>
+
+            <!-- Points to searchable activity -->
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".MainActivity" />
+
+            <!-- Points to searchable meta data -->
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable"/>
+
         </activity>
 
         <provider
@@ -54,46 +70,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBQvAaQIYklNdUhZ1BhdLqb1sHkm3KvCTs" />
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-
-            <intent-filter>
-
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.example.gcm" />
-
-            </intent-filter>
-
-        </receiver>
-
-        <service
-
-            android:name="com.example.MyGcmListenerService"
-            android:exported="false" >
-
-            <intent-filter>
-
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-            </intent-filter>
-
-        </service>
-
-        <service
-            android:name="com.example.MyInstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
-            </intent-filter>
-        </service>
-
-        <service
-            android:name="gcm.play.android.samples.com.gcmquickstart.RegistrationIntentService"
-            android:exported="false">
-        </service>
 
     </application>
 
