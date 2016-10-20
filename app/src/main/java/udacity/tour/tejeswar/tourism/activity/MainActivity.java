@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.Menu;
+import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -33,6 +34,8 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 
     GoogleMap googleMap;
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
 
@@ -51,7 +54,7 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         if(status!=ConnectionResult.SUCCESS)
 
         {
-            // Google Play Services are not available
+
             int requestCode = 10;
 
             Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this, requestCode);
@@ -77,7 +80,7 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
             }
             else
             {
-                Toast.makeText(this, R.string.error_permission_map, Toast.LENGTH_LONG).show();
+                Log.d(TAG, "error: %%%%%%%%%%%%%%%" + R.string.error_permission_map);
             }
 
             getSupportLoaderManager().initLoader(0, null, this);
