@@ -71,6 +71,46 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBQvAaQIYklNdUhZ1BhdLqb1sHkm3KvCTs" />
 
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+
+            <intent-filter>
+
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.gcm" />
+
+            </intent-filter>
+
+        </receiver>
+
+        <service
+
+            android:name="com.example.MyGcmListenerService"
+            android:exported="false" >
+
+            <intent-filter>
+
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+            </intent-filter>
+
+        </service>
+
+        <service
+            android:name="com.example.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="gcm.play.android.samples.com.gcmquickstart.RegistrationIntentService"
+            android:exported="false">
+        </service>
+
     </application>
 
 </manifest>

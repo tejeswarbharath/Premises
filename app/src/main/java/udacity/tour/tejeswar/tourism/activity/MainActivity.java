@@ -1,17 +1,25 @@
 package udacity.tour.tejeswar.tourism.activity;
 
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.view.Menu;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -25,26 +33,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import udacity.tour.tejeswar.tourism.R;
 import udacity.tour.tejeswar.tourism.data.LocationsContentProvider;
 import udacity.tour.tejeswar.tourism.data.LocationsDB;
-import android.support.v4.content.ContextCompat;
-import android.content.pm.PackageManager;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.widget.SearchView;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import android.app.SearchManager;
 
-public class MainActivity extends SherlockFragmentActivity implements LoaderCallbacks<Cursor>
+public class MainActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>
 
 {
 
     GoogleMap googleMap;
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private void init()
+    {
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+
+        inflater.inflate(R.layout.activity_result, this);
+
+    }
 
     @Override
 
@@ -178,7 +183,9 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
             doSearch(intent.getStringExtra(SearchManager.QUERY));
 
         }
+
         else if(intent.getAction().equals(Intent.ACTION_VIEW))
+
         {
 
             getPlace(intent.getStringExtra(SearchManager.EXTRA_DATA_KEY));
@@ -216,6 +223,7 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
 
     }
 
+
     private void drawMarker(LatLng point)
 
     {
@@ -241,7 +249,7 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
 
             /** Setting up values to insert the clicked location into SQLite database */
 
-            getContentResolver().insert(LocationsContentProvider.CONTENT_URI, contentValues[0]);
+            getContentResolver().insert(LocationsContentProvider.BASE_SEARCH_URI, contentValues[0]);
 
             return null;
 
@@ -260,7 +268,7 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
 
             /** Deleting all the locations stored in SQLite database */
 
-            getContentResolver().delete(LocationsContentProvider.CONTENT_URI, null, null);
+            getContentResolver().delete(LocationsContentProvider.BASE_SEARCH_URI, null, null);
 
             return null;
 
@@ -270,18 +278,55 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
+
     {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = menu.findItem(R.id.Action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItemCompat.setOnActionExpandListener(searchItem, new SearchViewExpandListener(this));
+        MenuItemCompat.setActionView(searchItem, searchView);
 
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Toast.makeText(MainActivity.this, "You searched " + s, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
 
         return true;
+    }
+
+    private class SearchViewExpandListener implements MenuItemCompat.OnActionExpandListener
+    {
+
+        private Context context;
+
+        public SearchViewExpandListener (Context c) {
+            context = c;
+        }
+
+        @Override
+        public boolean onMenuItemActionExpand(MenuItem item) {
+            ((AppCompatActivity) context).getSupportActionBar().setDisplayShowHomeEnabled(true);
+            return false;
+        }
+
+        @Override
+        public boolean onMenuItemActionCollapse(MenuItem item) {
+            ((AppCompatActivity) context).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            return false;
+        }
+
     }
 
     @Override
@@ -294,11 +339,11 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
 
         if(arg0==0)
 
-            cLoader = new CursorLoader(getBaseContext(), LocationsContentProvider.SEARCH_URI, null, null, new String[]{ query.getString("query") }, null);
+            cLoader = new CursorLoader(getBaseContext(), LocationsContentProvider.BASE_SEARCH_URI, null, null, new String[]{ query.getString("query") }, null);
 
         else if(arg0==1)
 
-            cLoader = new CursorLoader(getBaseContext(), LocationsContentProvider.DETAILS_URI, null, null, new String[]{ query.getString("query") }, null);
+            cLoader = new CursorLoader(getBaseContext(), LocationsContentProvider.BASE_DETAILS_URI, null, null, new String[]{ query.getString("query") }, null);
 
         return cLoader;
 

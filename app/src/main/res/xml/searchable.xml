@@ -3,7 +3,6 @@
             android:label="@string/app_name"
             android:hint="@string/search_hint"
             android:searchSettingsDescription="@string/search_settings"
-
             android:searchSuggestAuthority="udacity.tour.tejeswar.tourism.data.LocationContentProvider"
             android:searchSuggestIntentAction="android.intent.action.VIEW"
             android:searchSuggestSelection=" ?"

@@ -47,9 +47,11 @@ public class LocationsContentProvider extends ContentProvider
 
     private static final int DETAILS = 3;
 
-    private static final UriMatcher uriMatcher = buildUriMatcher();
+    private static final UriMatcher mUriMatcher = buildUriMatcher();
 
-    public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SEARCH).build();
+    public static final Uri BASE_SEARCH_URI = SEARCH_URI.buildUpon().appendPath(PATH_SEARCH).build();
+
+    public static final Uri BASE_DETAILS_URI = DETAILS_URI.buildUpon().appendPath(PATH_DETAILS).build();
 
     String mKey = "AIzaSyCqaeMMwe9oocc7BQJbyU4gxpbg6wshtEU";
 
@@ -57,7 +59,7 @@ public class LocationsContentProvider extends ContentProvider
 
     {
 
-        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(AUTHORITY, PATH_SEARCH , SEARCH);
 
@@ -65,7 +67,7 @@ public class LocationsContentProvider extends ContentProvider
 
         uriMatcher.addURI(AUTHORITY,PATH_DETAILS,DETAILS );
 
-
+        return uriMatcher;
     }
 
     LocationsDB mLocationsDB;
