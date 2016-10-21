@@ -17,9 +17,11 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -40,16 +42,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
     GoogleMap googleMap;
 
+    String search;
+
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    private void init()
-    {
-
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-
-        inflater.inflate(R.layout.activity_result, this);
-
-    }
 
     @Override
 
@@ -66,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
 
         // Showing status
+
 
         if(status!=ConnectionResult.SUCCESS)
 
@@ -188,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
         {
 
-            getPlace(intent.getStringExtra(SearchManager.EXTRA_DATA_KEY));
+         getPlace(intent.getStringExtra(SearchManager.EXTRA_DATA_KEY));
 
         }
 
@@ -211,7 +207,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         Bundle data = new Bundle();
         data.putString("query", query);
         getSupportLoaderManager().restartLoader(0, data, this);
-
     }
 
     private void getPlace(String query)
